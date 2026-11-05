@@ -1,0 +1,5 @@
+# LeKiwi without cameras. LeRobot's default LeKiwi settings open two cameras, even for calibration,
+# and fail if they are not connected. Used on the calibration page.
+robot:
+  type: lekiwi
+  cameras: {}
