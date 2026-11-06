@@ -55,6 +55,14 @@ def read_pictures(source, every):
 
 def find_corners(gray, board_size):
     """The board's inner corners in a grayscale picture, or None if the whole board is not visible."""
+    if hasattr(cv2, "findChessboardCornersSB"):
+        found, corners = cv2.findChessboardCornersSB(
+            gray,
+            board_size,
+            flags=cv2.CALIB_CB_EXHAUSTIVE | cv2.CALIB_CB_ACCURACY | cv2.CALIB_CB_NORMALIZE_IMAGE,
+        )
+        if found:
+            return corners
     found, corners = cv2.findChessboardCorners(
         gray, board_size, flags=cv2.CALIB_CB_ADAPTIVE_THRESH | cv2.CALIB_CB_NORMALIZE_IMAGE)
     if not found:

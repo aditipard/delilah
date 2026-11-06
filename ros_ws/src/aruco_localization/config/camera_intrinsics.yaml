@@ -1,0 +1,62 @@
+camera_name: lekiwi_camera
+image_width: 640
+image_height: 480
+camera_matrix:
+  rows: 3
+  cols: 3
+  data:
+  - 330.86334266433124
+  - 0.0
+  - 329.53711360391145
+  - 0.0
+  - 332.15386622064386
+  - 250.04291335449363
+  - 0.0
+  - 0.0
+  - 1.0
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data:
+  - 0.00986843897226721
+  - 0.12094408304575352
+  - -0.004831361603272975
+  - 0.0009145905452350694
+  - -0.32191030935992715
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data:
+  - 1.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+projection_matrix:
+  rows: 3
+  cols: 4
+  data:
+  - 330.86334266433124
+  - 0.0
+  - 329.53711360391145
+  - 0.0
+  - 0.0
+  - 332.15386622064386
+  - 250.04291335449363
+  - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+  - 0.0
+calibration:
+  rms_reprojection_error_px: 0.7576577425641677
+  pictures_used: 32
+  board_inner_corners:
+  - 10
+  - 7
+  square_size_m: 0.025

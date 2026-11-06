@@ -18,7 +18,17 @@ cd ~/FOR26/Assignment4/Calibration/scripts
 python capture_calibration_images.py ~/calibration_pictures
 ```
 
+The command prints the exact path of every saved image. If OpenCV cannot write an image,
+it stops with an explicit error instead of counting the picture as saved. Use an absolute
+output path when in doubt, and make sure the output folder is writable.
+
 A window shows the camera. When the whole board is found, coloured lines connect its corners. Press **space** to save a picture, **q** to quit. It stops by itself after 40 pictures.
+
+The window displays `BOARD FOUND` when the configured pattern is detected. If it says
+`NO BOARD - check inner corners`, count only the interior intersections, not the outer
+edge or the number of squares. For example, 11 x 8 squares means `--cols 10 --rows 7`.
+The Qt `QFontDatabase` font warning, if printed in the terminal, is unrelated to board
+detection and image saving.
 
 Working over SSH, without a window? Add `--auto`. It then saves a picture whenever the whole board is visible and has moved since the last one. Move the board slowly; stop with Ctrl+C.
 
@@ -73,14 +83,25 @@ If the error is too high: take new pictures with more tilt, more coverage of the
 
 ## Step 4: Use it
 
-The file is in the `aruco_localization` package's `config` folder, so building the workspace installs it, and the launch file finds it:
+Open the calibration file you created in Step 2:
+
+```text
+~/FOR26/ros_ws/src/aruco_localization/config/camera_intrinsics.yaml
+```
+
+This is a YAML text file. It should contain `camera_matrix`, `distortion_coefficients`,
+and the `calibration` block. `colcon build` does not create this file; it installs the
+file into the built ROS workspace so the launch file can find it:
 
 ```bash
 cd ~/FOR26/ros_ws
 colcon build
 ```
 
-Open the file. It has the layout ROS uses for camera calibrations: `camera_matrix` (K, row by row), `distortion_coefficients` (k1, k2, p1, p2, k3), and a few fields ROS needs for other camera types. The last block, `calibration`, records how it was made.
+If you used a different `--output` path in Step 2, open that path instead. The file has
+the layout ROS uses for camera calibrations: `camera_matrix` (K, row by row),
+`distortion_coefficients` (k1, k2, p1, p2, k3), and a few fields ROS needs for other
+camera types. The last block, `calibration`, records how it was made.
 
 ## Try it yourself
 

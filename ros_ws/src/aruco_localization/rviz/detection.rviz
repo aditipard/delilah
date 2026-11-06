@@ -1,49 +1,155 @@
 Panels:
-- Class: rviz_common/Displays
-  Name: Displays
-- Class: rviz_common/Views
-  Name: Views
+  - Class: rviz_common/Displays
+    Help Height: 70
+    Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+      Splitter Ratio: 0.5
+    Tree Height: 369
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+      - /Current View1/Focal Point1
+    Name: Views
+    Splitter Ratio: 0.5
 Visualization Manager:
-  Class: ''
+  Class: ""
   Displays:
-  - Class: rviz_default_plugins/Grid
-    Name: Grid
-    Enabled: true
-    Cell Size: 0.5
-    Plane Cell Count: 20
-    Reference Frame: <Fixed Frame>
-    Value: true
-  - Class: rviz_default_plugins/TF
-    Name: TF
-    Enabled: true
-    Marker Scale: 0.4
-    Show Arrows: false
-    Show Axes: true
-    Show Names: true
-    Frame Timeout: 2
-    Value: true
-  - Class: rviz_default_plugins/MarkerArray
-    Name: Detected markers
-    Enabled: true
-    Namespaces: {}
-    Topic:
-      Value: /detected_markers_viz
-      Depth: 10
-      History Policy: Keep Last
-      Reliability Policy: Reliable
-      Durability Policy: Volatile
-    Value: true
-  - Class: rviz_default_plugins/Image
-    Name: Camera
-    Enabled: true
-    Normalize Range: true
-    Topic:
-      Value: /camera/image_annotated
-      Depth: 2
-      History Policy: Keep Last
-      Reliability Policy: Best Effort
-      Durability Policy: Volatile
-    Value: true
+    - Alpha: 0.5
+      Cell Size: 0.5
+      Class: rviz_default_plugins/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 20
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 2
+      Frames:
+        All Enabled: true
+        base:
+          Value: true
+        camera:
+          Value: true
+        camera_link:
+          Value: true
+        detected_10:
+          Value: true
+        detected_11:
+          Value: true
+        detected_12:
+          Value: true
+        detected_13:
+          Value: true
+        detected_14:
+          Value: true
+        detected_15:
+          Value: true
+        detected_16:
+          Value: true
+        detected_17:
+          Value: true
+        detected_18:
+          Value: true
+        detected_19:
+          Value: true
+        map:
+          Value: true
+        marker_10:
+          Value: true
+        marker_11:
+          Value: true
+        marker_12:
+          Value: true
+        marker_13:
+          Value: true
+        marker_14:
+          Value: true
+        marker_15:
+          Value: true
+        marker_16:
+          Value: true
+        marker_17:
+          Value: true
+        marker_18:
+          Value: true
+        marker_19:
+          Value: true
+        odom:
+          Value: true
+      Marker Scale: 0.4000000059604645
+      Name: TF
+      Show Arrows: false
+      Show Axes: true
+      Show Names: true
+      Tree:
+        base:
+          camera_link:
+            camera:
+              detected_10:
+                {}
+              detected_11:
+                {}
+              detected_12:
+                {}
+              detected_13:
+                {}
+              detected_14:
+                {}
+              detected_15:
+                {}
+              detected_16:
+                {}
+              detected_17:
+                {}
+              detected_18:
+                {}
+              detected_19:
+                {}
+        odom:
+          {}
+      Update Interval: 0
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Detected markers
+      Namespaces:
+        detected_ids: true
+        detected_markers: true
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /detected_markers_viz
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Camera
+      Normalize Range: true
+      Topic:
+        Depth: 2
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /camera/image_annotated
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -51,33 +157,59 @@ Visualization Manager:
     Frame Rate: 30
   Name: root
   Tools:
-  - Class: rviz_default_plugins/Interact
-  - Class: rviz_default_plugins/MoveCamera
-  - Class: rviz_default_plugins/Measure
-  - Class: rviz_default_plugins/SetInitialPose
-    Topic:
-      Value: /initialpose
-    Covariance x: 0.25
-    Covariance y: 0.25
-    Covariance yaw: 0.07
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
+      Covariance x: 0.25
+      Covariance y: 0.25
+      Covariance yaw: 0.07000000029802322
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /initialpose
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
   Value: true
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Name: Current View
-      Distance: 3.0
+      Distance: 3
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
       Focal Point:
-        X: 0.8
-        Y: 0.0
-        Z: 0.2
-      Pitch: 0.9
-      Yaw: 3.6
+        X: 0.800000011920929
+        Y: 0
+        Z: 0.20000000298023224
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.13999995589256287
       Target Frame: <Fixed Frame>
-      Near Clip Distance: 0.01
       Value: Orbit (rviz)
-    Saved: []
+      Yaw: 2.839996576309204
+    Saved: ~
 Window Geometry:
-  Height: 900
-  Width: 1500
-  X: 50
-  Y: 50
+  Camera:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Height: 1010
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd00000002000000000000010000000199fc0200000002fb000000100044006900730070006c0061007900730000000171000000cc000000cc00fffffffb0000000a00560069006500770073010000023a00000199000000a900ffffff00000002000005ad000001f5fc0100000001fb0000000c00430061006d0065007200610100000000000005ad0000006800ffffff000004a70000019900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Views:
+    collapsed: false
+  Width: 1453
+  X: 73
+  Y: 32

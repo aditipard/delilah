@@ -79,7 +79,7 @@ class SimNode(Node):
                 raise RuntimeError("The aruco scene needs a marker map: -p map_file:=/path/to/map.yaml")
             with open(map_file) as f:
                 aruco_markers = yaml.safe_load(f)
-        self.sim = LeKiwiSim(scene=scene, aruco_markers=aruco_markers)
+        self.sim = LeKiwiSim(scene = scene, aruco_markers = aruco_markers)
         self.sim.set_base_pose(*self.get_parameter("start_pose").value)
         if self.get_parameter("viewer").value:
             self.sim.open_viewer()

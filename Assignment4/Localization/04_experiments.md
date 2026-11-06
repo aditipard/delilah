@@ -62,7 +62,7 @@ python replay_filter.py my_run --num-particles 1000 --seed 1 --output n1000.csv
 
 ### Section 4: Localization
 
-**L1. Accuracy in simulation.** In the simulator, record a run of a square and a circle (`record_localization.py`, `drive_pattern.py`). Plot it with `plot_localization.py`. Report the mean and largest position error and heading error, against the true pose, and compare with odometry alone.
+**L1. Accuracy in simulation.*
 
 **L2. Stationary variance.** Let the robot stand still for 60 s at three places: one where it sees one marker, one where it sees two, one where it sees three or more (in the simulator and on the real robot). Record with `record_localization.py`. Report the standard deviation of the estimate (x, y, heading) over the 60 s, and the spread of the particles (`std_x`, `std_y`, `std_theta` columns). Do the two agree? How does the number of markers in view change them? In the simulator, does the estimate stay on the true pose, or drift away from it? Why might it drift although nothing moves?
 

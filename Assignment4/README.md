@@ -70,7 +70,7 @@ One launch file starts all of it, in simulation or on the robot:
 ```bash
 ros2 launch aruco_localization localization.launch.py                                  # simulator
 ros2 launch aruco_localization localization.launch.py robot:=real port:=/dev/ttyACM0   # real robot
-```
+```cd
 
 ## The frames
 

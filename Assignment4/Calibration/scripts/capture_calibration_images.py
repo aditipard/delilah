@@ -29,6 +29,23 @@ MIN_MOVE = 0.08     # --auto: the board must move by this fraction of the pictur
 MIN_INTERVAL = 0.7  # --auto: at least this many seconds between pictures
 
 
+def find_board(gray, board_size):
+    """Return whether the whole board is visible and its detected corners."""
+    if hasattr(cv2, "findChessboardCornersSB"):
+        found, corners = cv2.findChessboardCornersSB(
+            gray,
+            board_size,
+            flags=cv2.CALIB_CB_EXHAUSTIVE | cv2.CALIB_CB_ACCURACY | cv2.CALIB_CB_NORMALIZE_IMAGE,
+        )
+        if found:
+            return found, corners
+    return cv2.findChessboardCorners(
+        gray,
+        board_size,
+        flags=cv2.CALIB_CB_ADAPTIVE_THRESH | cv2.CALIB_CB_NORMALIZE_IMAGE,
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("output")
@@ -62,8 +79,7 @@ def main():
             if not ok:
                 continue
             gray = cv2.cvtColor(picture, cv2.COLOR_BGR2GRAY)
-            # The fast check is good enough to decide whether to save; calibrate_camera.py refines later.
-            found, corners = cv2.findChessboardCorners(gray, (args.cols, args.rows), flags=cv2.CALIB_CB_FAST_CHECK)
+            found, corners = find_board(gray, (args.cols, args.rows))
             save = False
             if args.auto:
                 if found and time.time() - last_time > MIN_INTERVAL:
@@ -74,6 +90,9 @@ def main():
                 shown = picture.copy()
                 cv2.drawChessboardCorners(shown, (args.cols, args.rows), corners, found)
                 cv2.putText(shown, f"{saved} saved", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                cv2.putText(shown, "BOARD FOUND" if found else "NO BOARD - check inner corners",
+                            (10, 55), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
+                            (0, 255, 0) if found else (0, 0, 255), 2)
                 cv2.imshow("calibration", shown)
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord("q"):
@@ -85,7 +104,8 @@ def main():
                         print("The whole board is not visible: not saved.")
             if save:
                 path = output / f"calib_{saved:03d}.png"
-                cv2.imwrite(str(path), picture)
+                if not cv2.imwrite(str(path), picture):
+                    raise RuntimeError(f"Could not save picture to {path}. Check that the output folder is writable.")
                 saved += 1
                 last_time = time.time()
                 print(f"saved {path} ({saved}/{args.count})")

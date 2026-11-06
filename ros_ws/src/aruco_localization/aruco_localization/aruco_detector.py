@@ -50,9 +50,17 @@ def marker_pose_from_corners(image_corners, size, camera_matrix, distortion):
         OpenCV's: x to the right of the picture, y down, z forward out of the lens.
     """
     T = np.eye(4)
-    # TODO (Detection, page 2): find the marker's pose in the camera frame from its four corners.
-    # Use cv2.solvePnP with marker_corners(size) as the object points and cv2.SOLVEPNP_IPPE_SQUARE, then
-    # write the rotation (from the rotation vector) and the translation into T.
+    ok, rvec, tvec = cv2.solvePnP(
+        marker_corners(size).astype(np.float32),
+        np.asarray(image_corners, dtype=np.float32),
+        np.asarray(camera_matrix, dtype=np.float64),
+        np.asarray(distortion, dtype=np.float64),
+        flags=cv2.SOLVEPNP_IPPE_SQUARE,
+    )
+    if not ok:
+        raise RuntimeError("OpenCV could not estimate the pose of the detected ArUco marker.")
+    T[:3, :3] = Rotation.from_rotvec(rvec.ravel()).as_matrix()
+    T[:3, 3] = tvec.ravel()
     return T
 
 

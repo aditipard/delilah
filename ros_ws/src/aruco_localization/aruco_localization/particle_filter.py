@@ -48,8 +48,18 @@ def motion_update(particles, delta, noise, rng):
         the moved particles, N x 3, with theta wrapped to [-pi, pi)
     """
     particles = particles.copy()
-    # TODO (Localization, page 1): move every particle by delta plus normal noise, as described above.
-    # Each particle gets its own noisy copy of the step, applied in its own frame (use its theta).
+    dx, dy, dtheta = delta
+    alpha_translation, alpha_rotation, sigma_xy_min, sigma_theta_min = noise
+    n = len(particles)
+    sigma_xy = alpha_translation * np.hypot(dx, dy) + sigma_xy_min
+    sigma_theta = alpha_rotation * abs(dtheta) + sigma_theta_min
+    step_x = dx + rng.normal(0.0, sigma_xy, n)
+    step_y = dy + rng.normal(0.0, sigma_xy, n)
+    step_theta = dtheta + rng.normal(0.0, sigma_theta, n)
+    theta = particles[:, 2]
+    particles[:, 0] += np.cos(theta) * step_x - np.sin(theta) * step_y
+    particles[:, 1] += np.sin(theta) * step_x + np.cos(theta) * step_y
+    particles[:, 2] = wrap(theta + step_theta)
     return particles
 
 
@@ -65,9 +75,11 @@ def expected_measurement(particles, marker):
         each particle, in the particle's own frame
     """
     n = len(particles)
-    expected_range, expected_bearing, expected_facing = np.zeros(n), np.zeros(n), np.zeros(n)
-    # TODO (Localization, page 2): fill expected_range, expected_bearing and expected_facing for every
-    # particle at once (NumPy arrays, no loop over particles).
+    dx = marker[0] - particles[:, 0]
+    dy = marker[1] - particles[:, 1]
+    expected_range = np.hypot(dx, dy)
+    expected_bearing = wrap(np.arctan2(dy, dx) - particles[:, 2])
+    expected_facing = wrap(marker[2] - particles[:, 2])
     return expected_range, expected_bearing, expected_facing
 
 
@@ -92,9 +104,19 @@ def measurement_log_likelihood(particles, measurements, marker_map, sigmas):
         array of length N: the log-likelihood of each particle (0 for all if no marker is in the map)
     """
     log_likelihood = np.zeros(len(particles))
-    # TODO (Localization, page 2): for each measurement of a marker in the map, subtract the capped,
-    # squared, normalised errors of range, bearing and facing from log_likelihood. Use
-    # expected_measurement() and the sigmas described above.
+    range_fraction, sigma_bearing, facing_per_metre = sigmas
+    for marker_id, measured_range, measured_bearing, measured_facing in measurements:
+        if marker_id not in marker_map:
+            continue
+        expected_range, expected_bearing, expected_facing = expected_measurement(
+            particles, marker_map[marker_id])
+        sigma_range = range_fraction * measured_range
+        sigma_facing = facing_per_metre * measured_range
+        range_error = (measured_range - expected_range) / sigma_range
+        bearing_error = wrap(measured_bearing - expected_bearing) / sigma_bearing
+        facing_error = wrap(measured_facing - expected_facing) / sigma_facing
+        for error in (range_error, bearing_error, facing_error):
+            log_likelihood -= 0.5 * np.minimum(np.abs(error), OUTLIER_CAP) ** 2
     return log_likelihood
 
 
@@ -112,10 +134,10 @@ def low_variance_resample(weights, rng):
         integer array of length N: the indices of the chosen particles
     """
     n = len(weights)
-    indices = np.arange(n)
-    # TODO (Localization, page 3): low-variance resampling as described above. np.cumsum and
-    # np.searchsorted do most of the work.
-    return indices
+    cumulative = np.cumsum(weights)
+    cumulative[-1] = 1.0
+    positions = rng.uniform(0.0, 1.0 / n) + np.arange(n) / n
+    return np.searchsorted(cumulative, positions)
 
 
 class ParticleFilter:
